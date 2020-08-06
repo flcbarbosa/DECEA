@@ -1,0 +1,62 @@
+---
+title: "Now it goes"
+author: "Fabio L. C. Barbosa"
+date: "8/6/2020"
+output: ioslides_presentation
+---
+
+## Preparing the grounds
+
+```{r}
+library(tidyverse)
+library(readr)
+library(lubridate)
+library(ggplot2)
+library(plotly)
+
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r}
+
+fixed.ds <- read_csv("fixedds.csv")
+```
+
+
+## Slide with Plot2
+```{r, echo=FALSE, message=FALSE}
+
+COVID_TABLE <- fixed.ds %>% group_by(DATE = date(ATOT), CLASS) %>% summarise(N_FLT =  n(),.groups="drop") %>% filter(!is.na(CLASS))
+
+COVID_CURVE <- COVID_TABLE %>% ggplot() +
+  geom_line(aes(x = DATE, y = N_FLT , color = CLASS)) +
+  labs(title = "Brazil Air Traffic", subtitle = "COVID effect (per day)", x = "Date", y = "Flights", caption = "Developed by Fábio Barbosa") +
+  #facet_wrap(.~CLASS) +
+  theme_minimal ()
+ggplotly(COVID_CURVE)
+```
+
